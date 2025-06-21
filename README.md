@@ -1,6 +1,73 @@
-# 🍬 API Carambar & Co - Blagues
+# 🍬 Carambar & Co - API
 
-API REST pour gérer les blagues de Carambar & Co, construite avec Node.js, Express, Sequelize et SQLite.
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white) ![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white) ![SQLite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
+
+API REST pour l'application de blagues Carambar & Co.
+
+---
+
+## 🔗 Liens importants
+
+-   **API en production :** [https://carambar-api-lndl.onrender.com/api/blagues](https://carambar-api-lndl.onrender.com/api/blagues)
+-   **Documentation Swagger :** [https://carambar-api-lndl.onrender.com/api-docs](https://carambar-api-lndl.onrender.com/api-docs)
+-   **Repository Frontend :** [https://github.com/Dihia-003/carambar-frontend](https://github.com/Dihia-003/carambar-frontend)
+
+---
+
+## 🚀 Démarrage local
+
+1.  **Cloner le repository**
+    ```bash
+    git clone https://github.com/Dihia-003/carambar-api.git
+    cd carambar-api
+    ```
+
+2.  **Installer les dépendances**
+    ```bash
+    npm install
+    ```
+
+3.  **Initialiser la base de données**
+    Cette commande va créer la base de données `database.sqlite` et la remplir avec 10 blagues.
+    ```bash
+    npm run setup-db
+    ```
+
+4.  **Démarrer le serveur**
+    ```bash
+    npm run dev
+    ```
+
+Le serveur sera accessible sur `http://localhost:3001`.
+
+---
+
+## 📚 Endpoints de l'API
+
+| Méthode | Endpoint            | Description                |
+| ------- | ------------------- | -------------------------- |
+| `GET`   | `/api/blagues`      | Récupérer toutes les blagues |
+| `GET`   | `/api/blagues/:id`  | Récupérer une blague par ID |
+| `GET`   | `/api/blagues/random` | Récupérer une blague aléatoire |
+| `POST`  | `/api/blagues`      | Ajouter une nouvelle blague  |
+| `PUT`   | `/api/blagues/:id`  | Mettre à jour une blague     |
+| `DELETE`| `/api/blagues/:id`  | Supprimer une blague         |
+
+---
+
+## 🚀 Instructions de Déploiement (Render.com)
+
+Ce projet est configuré pour un déploiement facile sur Render.
+
+-   **Runtime** : `Node`
+-   **Build Command** : `npm install && npm run setup-db`
+-   **Start Command** : `npm start`
+-   **Disque Persistant** :
+    -   **Name**: `data`
+    -   **Mount Path**: `/data`
+-   **Variable d'environnement** :
+    -   **Key**: `DATABASE_PATH`
+    -   **Value**: `/data/database.sqlite`
 
 ## 🚀 Fonctionnalités
 
