@@ -2,7 +2,7 @@
 
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white) ![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white) ![SQLite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
 
-API REST pour l'application de blagues Carambar & Co.
+API RESTful pour l'application de blagues Carambar & Co. Elle fournit des endpoints pour lire, créer, mettre à jour et supprimer des blagues.
 
 ---
 
@@ -14,11 +14,16 @@ API REST pour l'application de blagues Carambar & Co.
 
 ---
 
-## 🚀 Démarrage local
+## 📋 Prérequis
+
+- Node.js (version 14 ou supérieure)
+- npm
+
+## 🚀 Démarrage Rapide
 
 1.  **Cloner le repository**
     ```bash
-    git clone https://github.com/Dihia-003/carambar-api.git
+    git clone https://github.com/votre-username/carambar-api.git
     cd carambar-api
     ```
 
@@ -28,111 +33,48 @@ API REST pour l'application de blagues Carambar & Co.
     ```
 
 3.  **Initialiser la base de données**
-    Cette commande va créer la base de données `database.sqlite` et la remplir avec 10 blagues.
+    Cette commande crée le fichier `database.sqlite` et le remplit avec 10 blagues de test.
     ```bash
     npm run setup-db
     ```
 
 4.  **Démarrer le serveur**
     ```bash
+    # Pour le développement (avec rechargement automatique)
     npm run dev
+
+    # Pour la production
+    npm start
     ```
 
 Le serveur sera accessible sur `http://localhost:3001`.
+La documentation interactive (Swagger) sera disponible sur `http://localhost:3001/api-docs`.
 
 ---
 
 ## 📚 Endpoints de l'API
 
-| Méthode | Endpoint            | Description                |
-| ------- | ------------------- | -------------------------- |
-| `GET`   | `/api/blagues`      | Récupérer toutes les blagues |
-| `GET`   | `/api/blagues/:id`  | Récupérer une blague par ID |
-| `GET`   | `/api/blagues/random` | Récupérer une blague aléatoire |
-| `POST`  | `/api/blagues`      | Ajouter une nouvelle blague  |
-| `PUT`   | `/api/blagues/:id`  | Mettre à jour une blague     |
-| `DELETE`| `/api/blagues/:id`  | Supprimer une blague         |
+L'URL de base pour toutes les routes est `http://localhost:3001`.
 
----
+| Méthode | Endpoint                 | Description                     |
+| ------- | ------------------------ | ------------------------------- |
+| `GET`   | `/api/blagues`           | Récupérer toutes les blagues    |
+| `GET`   | `/api/blagues/random`    | Récupérer une blague aléatoire  |
+| `GET`   | `/api/blagues/:id`       | Récupérer une blague par son ID |
+| `POST`  | `/api/blagues`           | Ajouter une nouvelle blague     |
+| `PUT`   | `/api/blagues/:id`       | Mettre à jour une blague        |
+| `DELETE`| `/api/blagues/:id`       | Supprimer une blague            |
 
-## 🚀 Instructions de Déploiement (Render.com)
+### Exemples d'utilisation avec `curl`
 
-Ce projet est configuré pour un déploiement facile sur Render.
-
--   **Runtime** : `Node`
--   **Build Command** : `npm install && npm run setup-db`
--   **Start Command** : `npm start`
--   **Disque Persistant** :
-    -   **Name**: `data`
-    -   **Mount Path**: `/data`
--   **Variable d'environnement** :
-    -   **Key**: `DATABASE_PATH`
-    -   **Value**: `/data/database.sqlite`
-
-## 🚀 Fonctionnalités
-
-- ✅ API versionnée (v1)
-- ✅ CRUD complet pour les blagues
-- ✅ Endpoint pour blague aléatoire
-- ✅ Documentation Swagger intégrée
-- ✅ Architecture MVC
-- ✅ Base de données SQLite
-- ✅ Prêt pour le déploiement sur Render.com
-
-## 📋 Prérequis
-
-- Node.js (version 14 ou supérieure)
-- npm ou yarn
-
-## 🛠️ Installation
-
-1. **Cloner le repository**
+#### Récupérer une blague aléatoire
 ```bash
-git clone <url-du-repo-api>
-cd carambar-api
+curl http://localhost:3001/api/blagues/random
 ```
 
-2. **Installer les dépendances**
+#### Ajouter une nouvelle blague
 ```bash
-npm install
-```
-
-3. **Démarrer le serveur**
-```bash
-# Mode développement (avec nodemon)
-npm run dev
-
-# Mode production
-npm start
-```
-
-Le serveur sera accessible sur `http://localhost:3000`
-
-## 📚 Documentation API
-
-La documentation Swagger est disponible à l'adresse : `http://localhost:3000/api-docs`
-
-## 🔗 Endpoints
-
-### Base URL
-```
-http://localhost:3000/api/v1
-```
-
-### Endpoints disponibles
-
-| Méthode | Endpoint | Description |
-|---------|----------|-------------|
-| `GET` | `/blagues` | Récupérer toutes les blagues |
-| `GET` | `/blagues/:id` | Récupérer une blague par ID |
-| `GET` | `/blagues/random` | Récupérer une blague aléatoire |
-| `POST` | `/blagues` | Ajouter une nouvelle blague |
-
-### Exemples d'utilisation
-
-#### Ajouter une blague
-```bash
-curl -X POST http://localhost:3000/api/v1/blagues \
+curl -X POST http://localhost:3001/api/blagues \
   -H "Content-Type: application/json" \
   -d '{
     "contenu": "Pourquoi les plongeurs plongent-ils toujours en arrière ? Parce que sinon ils tombent dans le bateau !",
@@ -140,64 +82,41 @@ curl -X POST http://localhost:3000/api/v1/blagues \
   }'
 ```
 
-#### Récupérer une blague aléatoire
-```bash
-curl http://localhost:3000/api/v1/blagues/random
-```
+---
 
-#### Récupérer toutes les blagues
-```bash
-curl http://localhost:3000/api/v1/blagues
-```
-
-## 🗄️ Structure de la base de données
-
-### Table `Blagues`
-
-| Champ | Type | Description |
-|-------|------|-------------|
-| `id` | INTEGER | Clé primaire, auto-incrémentée |
-| `contenu` | TEXT | Contenu de la blague (obligatoire) |
-| `auteur` | STRING | Auteur de la blague (optionnel, défaut: "Anonyme") |
-| `date_creation` | DATETIME | Date de création automatique |
-| `date_modification` | DATETIME | Date de modification automatique |
-
-## 🏗️ Architecture
+## 🏗️ Structure du Projet
 
 ```
-carambar-api/
-├── config/
-│   └── database.js          # Configuration Sequelize
+carambar-api-repo/
 ├── controllers/
-│   └── blagueController.js  # Contrôleurs pour les blagues
+│   └── blagueController.js  # Logique métier pour les routes
 ├── models/
-│   └── Blague.js           # Modèle Sequelize
+│   └── Blague.js            # Modèle de données Sequelize pour une blague
 ├── routes/
-│   └── blagues.js          # Routes de l'API
-├── app.js                  # Point d'entrée de l'application
+│   └── blagues.js           # Définition des routes de l'API
+├── .gitignore
+├── app.js                   # Fichier de configuration Express (obsolète ou à vérifier)
 ├── package.json
-└── README.md
+├── package-lock.json
+├── README.md
+├── server.js                # Point d'entrée principal du serveur
+└── setup-database.js        # Script pour initialiser la base de données
 ```
 
-## 🚀 Déploiement sur Render.com
+---
 
-1. Connectez-vous à votre compte Render.com
-2. Créez un nouveau "Web Service"
-3. Connectez votre repository GitHub
-4. Configurez les variables d'environnement si nécessaire
-5. Déployez !
+## 🚀 Déploiement
 
-### Variables d'environnement recommandées
-- `NODE_ENV=production`
-- `PORT=10000` (ou le port fourni par Render)
+Ce projet est prêt à être déployé sur des plateformes comme Render, Heroku, etc.
 
-## 🧪 Tests
+### Exemple avec Render.com
 
-Pour tester l'API avec Postman :
+-   **Runtime** : `Node`
+-   **Build Command** : `npm install`
+-   **Start Command** : `npm start`
+-   **Note** : Si votre base de données doit persister après les déploiements, utilisez le service de disque de Render.
 
-1. Importez la collection Postman (à créer)
-2. Configurez l'URL de base : `http://localhost:3000/api/v1`
-3. Testez les différents endpoints
+---
 
 ## 📝 Licence
 
