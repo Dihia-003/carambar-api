@@ -65,6 +65,29 @@ async function startServer() {
         const Blague = require('./models/Blague')(sequelize);
         await sequelize.sync();
         console.log('🔄 Modèles synchronisés avec la base de données.');
+
+        // --- Seed ultra-simple : si la table est vide, on insère 12 blagues ---
+        const numExistingJokes = await Blague.count();
+        if (numExistingJokes === 0) {
+            console.log('🌱 Aucune blague trouvée. Insertion des blagues initiales...');
+            await Blague.bulkCreate([
+                { contenu: "Quelle est la femelle du hamster ? - L'Amsterdam", auteur: 'Carambar' },
+                { contenu: "Que dit un oignon quand il se cogne ? - Aïe", auteur: 'Carambar' },
+                { contenu: "Quel est l'animal le plus heureux ? - Le hibou, parce que sa femme est chouette.", auteur: 'Carambar' },
+                { contenu: "Pourquoi le football c'est rigolo ? - Parce que Thierry en rit", auteur: 'Carambar' },
+                { contenu: "Quel est le sport le plus fruité ? - La boxe, car on prend des pêches dans la poire et on tombe dans les pommes.", auteur: 'Carambar' },
+                { contenu: "Que se fait un Schtroumpf quand il tombe ? - Un bleu", auteur: 'Carambar' },
+                { contenu: "Quel est le comble pour un marin ? - Avoir le nez qui coule", auteur: 'Carambar' },
+                { contenu: "Qu'est-ce que les enfants usent le plus à l'école ? - Le professeur", auteur: 'Carambar' },
+                { contenu: "Quel est le sport le plus silencieux ? - Le para-chuuuut", auteur: 'Carambar' },
+                { contenu: "Quel est le comble pour un joueur de bowling ? - Perdre la boule", auteur: 'Carambar' },
+                { contenu: "Pourquoi les plongeurs plongent-ils en arrière ? - Parce que sinon ils tombent dans le bateau !", auteur: 'Carambar' },
+                { contenu: "Que dit un escargot quand il croise une tortue ? - Rien, il ne peut pas la rattraper !", auteur: 'Carambar' }
+            ]);
+            console.log('✅ 12 blagues initiales insérées.');
+        } else {
+            console.log(`📚 ${numExistingJokes} blague(s) déjà présente(s). Pas de seed.`);
+        }
         
         // ÉTAPE 4 : Configuration de la documentation Swagger.
         // C'est seulement maintenant, que la BDD est prête, qu'on peut charger les routes qui en dépendent.
