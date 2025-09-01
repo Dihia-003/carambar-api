@@ -63,6 +63,7 @@ async function startServer() {
         // ÉTAPE 3 : On importe notre modèle 'Blague' et on le synchronise.
         // `sequelize.sync()` va créer la table 'Blagues' dans la BDD si elle n'existe pas.
         const Blague = require('./models/Blague')(sequelize);
+        const User = require('./models/User')(sequelize);
         await sequelize.sync();
         console.log('🔄 Modèles synchronisés avec la base de données.');
 
@@ -112,6 +113,10 @@ async function startServer() {
         console.log('📝 Import et configuration des routes...');
         const blagueRoutes = require('./routes/blagues')(Blague); // On passe le modèle 'Blague' aux routes.
         app.use('/api/blagues', blagueRoutes); // Toutes les routes définies dans blagues.js seront préfixées par /api/blagues.
+
+        // Routes d'auth simples
+        const authRoutes = require('./routes/auth')(User);
+        app.use('/api/auth', authRoutes);
 
         // Route de test simple pour vérifier que le serveur est en vie.
         app.get('/', (req, res) => {
