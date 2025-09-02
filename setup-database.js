@@ -54,6 +54,34 @@ const Blague = sequelize.define('Blague', {
 // On s'assure que le nom de la table est bien 'Blagues'.
 Blague.tableName = 'Blagues';
 
+// --- Définition du modèle User ---
+const User = sequelize.define('User', {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
+            isEmail: true,
+        },
+    },
+    passwordHash: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    session_token: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+}, {
+    timestamps: true,
+    tableName: 'Users',
+});
+
 // --- Données de test ---
 // On prépare un tableau d'objets contenant les blagues que l'on veut insérer dans notre BDD.
 const blagues = [
@@ -107,18 +135,45 @@ async function setupDatabase() {
         await sequelize.authenticate();
         console.log('✅ Connexion à la base de données établie avec succès.');
 
-        // Synchronisation forcée de la base de données.
-        // L'option { force: true } est cruciale ici : elle dit à Sequelize de supprimer les tables si elles existent déjà avant de les recréer.
-        // C'est ce qui garantit qu'on a toujours une base de données fraîche après avoir lancé le script.
+        // Synchronisation de la base de données.
+        // L'option { force: false } préserve les données existantes et ne crée que les tables manquantes.
         console.log('🔄 Création des tables...');
-        await sequelize.sync({ force: true });
+        await sequelize.sync({ force: false });
         console.log('✅ Tables créées avec succès.');
 
         // On boucle sur notre tableau de blagues et on les insère une par une dans la BDD.
         console.log('🔄 Ajout des blagues de test...');
         for (const blague of blagues) {
-            await Blague.create(blague);
-            console.log(`✅ Blague ajoutée : ${blague.contenu.substring(0, 30)}...`);
+            // Vérifier si la blague existe déjà pour éviter les doublons
+            const existingBlague = await Blague.findOne({ where: { contenu: blague.contenu } });
+            if (!existingBlague) {
+                await Blague.create(blague);
+                console.log(`✅ Blague ajoutée : ${blague.contenu.substring(0, 30)}...`);
+            } else {
+                console.log(`ℹ️ Blague déjà existante : ${blague.contenu.substring(0, 30)}...`);
+            }
+        }
+
+        // Création de l'utilisateur admin par défaut
+        console.log('🔄 Création de l\'utilisateur admin...');
+        const crypto = require('crypto');
+        const adminPassword = 'admin123';
+        const adminPasswordHash = crypto.createHash('sha256').update(adminPassword).digest('hex');
+        
+        try {
+            await User.create({
+                email: 'admin@carambar.com',
+                passwordHash: adminPasswordHash
+            });
+            console.log('✅ Utilisateur admin créé avec succès');
+            console.log('📧 Email: admin@carambar.com');
+            console.log('🔑 Mot de passe: admin123');
+        } catch (error) {
+            if (error.name === 'SequelizeUniqueConstraintError') {
+                console.log('ℹ️ Utilisateur admin existe déjà');
+            } else {
+                console.error('❌ Erreur lors de la création de l\'admin:', error);
+            }
         }
 
         // Petite vérification finale pour s'assurer que tout a été ajouté.
